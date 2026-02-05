@@ -116,7 +116,7 @@ class MyModel:
     def run_train(self, work_dir: str):
         # self.max_n = 6
 
-        train_path = os.path.join(work_dir, "wiki.txt")
+        train_path = os.path.join(work_dir, "wiki.txt") # CHANGE LATER ITS HARD CODED AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAh
         
         max_lines = 200000 # training cap so we don't train infinitely 
         seen = 0 # counter
