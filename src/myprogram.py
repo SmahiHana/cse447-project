@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 import os
 import string
-import random
+import random # currently because of placeholder logic 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
+"""
+    Notes: 
+        Data loading: load_training_data & load_test_data
+        Model behavior: run_train & run_pred
+        Persistence: save & load
+        Output Formatting: write_pred
+"""
 
 class MyModel:
     """
@@ -11,12 +18,22 @@ class MyModel:
     """
 
     @classmethod
+    # This is where we'll load wikipedia data: 
+        # Read wiki pages
+        # normalize Unicode (NFC) (split by letters not words)
+        # split into grapheme clusters
+        # yeild text to "run_train"
     def load_training_data(cls):
         # your code here
         # this particular model doesn't train
         return []
 
     @classmethod
+    # This is where we'll Test:
+        # Read test file line-by line
+        # remove trailing newlines
+        # each line is treated as the text typed so dar
+        #returns a list of strings
     def load_test_data(cls, fname):
         # your code here
         data = []
@@ -27,25 +44,38 @@ class MyModel:
         return data
 
     @classmethod
+    # Writes predictions to a file
+        # each prediction is a string of length 3? 
     def write_pred(cls, preds, fname):
         with open(fname, 'wt') as f:
             for p in preds:
                 f.write('{}\n'.format(p))
 
+    # This is where we learn 
+        # Build 5-8 grams over grapheme clusters
+        # apply normalization 
+        # stores counts for inference
     def run_train(self, data, work_dir):
         # your code here
         pass
+    
+    # We need this to: 
+        # normalize inp (NFC --> getting identical letters to look the same in unicode)
+        # return a list of strings where each string is the 3 predicted characters 
+        # normalize to NFC, extract context (n-1) grapheme, the score next grapheme candidates 
+        # then applying smoothing/backoff, then return exactly 3 graphemes
 
     def run_pred(self, data):
         # your code here
         preds = []
         all_chars = string.ascii_letters
         for inp in data:
-            # this model just predicts a random character each time
+            # this model just predicts a random character each time currently 
             top_guesses = [random.choice(all_chars) for _ in range(3)]
             preds.append(''.join(top_guesses))
         return preds
 
+    # searlizes trained data so that run_pred can do lookups
     def save(self, work_dir):
         # your code here
         # this particular model has nothing to save, but for demonstration purposes we will save a blank file
@@ -53,6 +83,7 @@ class MyModel:
             f.write('dummy save')
 
     @classmethod
+    # saves what we currently have in memory to be used again next time
     def load(cls, work_dir):
         # your code here
         # this particular model has nothing to load, but for demonstration purposes we will load a blank file
